@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
+#include "Context.h"
 
 #ifndef AQM_SCREEN
 #define AQM_SCREEN
@@ -40,24 +41,19 @@ class Screen {
         uint8_t currentView = 0;
 
         // View data binding
-        float pm1;
-        float pm2_5;
-        float pm4;
-        float pm10;
-        char *errors[];
+        Context* context;
         
     public:
-        Screen();
+        Screen(struct Context* context);
         void setView(uint8_t view);
         void nextView();
         void refresh();
         void toggleBacklight();
-
-        // Data binding
-        void setPmConcentration(float pm1, float pm2_5, float pm4, float pm10);
+        void waitForIt(char* message, int8_t seconds);
 
         // Views
-        void showSplash();
+        void showSplash(char* libelle, int8_t counter = -1);
+        void showError(char* message);
         void showMainConcentration();
         void showAllConcentration();
         void showStatus();

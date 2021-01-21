@@ -10,7 +10,18 @@ https://forum.airnowtech.org/t/the-aqi-equation/169
 https://www.epa.gov/sites/production/files/2014-05/documents/zell-aqi.pdf
 https://forum.airnowtech.org/t/aqi-calculations-overview-ozone-pm2-5-and-pm10/168
 
+
+[]
+
+## Bill of materials
+
+
 ## Build
+
+1. Configure the card
+Arduino/libraries/TFT_eSPI/User_Setup_Select.h
+//#include <User_Setup.h>
+#include <User_Setups/Setup25_TTGO_T_Display.h>
 
 Make sure to include the repository directory to your include path. 
 Exemple for `vscode`: 
