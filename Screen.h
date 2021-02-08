@@ -27,10 +27,11 @@
 #define ADC_EN 14 // ADC_EN is the ADC detection enable port
 #define ADC_PIN 34
 
-const uint8_t TOTAL_SCREEN = 3;
+const uint8_t TOTAL_SCREEN = 4;
 const uint8_t SCREEN_PM25 = 0;
-const uint8_t SCREEN_PMALL = 1;
-const uint8_t SCREEN_STATUS = 2;
+const uint8_t SCREEN_ECO2 = 1;
+const uint8_t SCREEN_TVOC = 2;
+const uint8_t SCREEN_ALL = 3;
 
 class Screen {
 private:
@@ -55,8 +56,9 @@ public:
   void showSplash(char *libelle, int8_t counter = -1);
   void showError(char *message);
   void showMainConcentration();
-  void showAllConcentration();
-  void showStatus();
+  void showeco2();
+  void showtvoc();
+  void showAllData();
 };
 
 #endif

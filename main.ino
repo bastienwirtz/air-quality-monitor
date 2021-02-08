@@ -16,6 +16,7 @@ char* mqttPassword = "";
 Context context;
 Screen screen = Screen(&context);
 PMSensor pms = PMSensor(&context.particleMatter, &context.AQI);
+VOCSensor voc = VOCSensor(&context.gas);
 Cloud cloud = Cloud(wifiSsid, wifiPassword, mqttServer, mqttUser, mqttPassword);
 
 Button2 btnTop(35);
@@ -34,6 +35,13 @@ void setup()
         delay(500);
     }
 
+    screen.showSplash("Initialise gas sensor");
+    delay(500);
+    if (!voc.init()) {
+        screen.showError("Fail!");
+        delay(500);
+    }
+
     screen.showSplash("Initialise particle sensor");
     if (!pms.init()) {
         screen.showError("Fail!");
@@ -43,9 +51,10 @@ void setup()
         * stable flow and possible remaining particles are cleaned out */
         screen.waitForIt("Cleaning extra dust", 10);
         pms.update();
-        screen.setView(SCREEN_PM25);
-        screen.refresh();
     }
+
+    screen.setView(SCREEN_PM25);
+    screen.refresh();
 }
 
 void loop()
@@ -56,6 +65,7 @@ void loop()
     // Data update loop
     if (timesUp(readInterval)) {
         pms.update();
+        voc.update();
         screen.refresh();
         cloud.send("home/livingroom/airquality", formatCloudData());
     }
@@ -87,6 +97,8 @@ bool timesUp(long interval) {
 const char* formatCloudData() {
     char cloudDataBuffer[300];
     sprintf(cloudDataBuffer, "{"
+            "\"tvoc\":\"%d\","
+            "\"eco2\":\"%d\","
             "\"mc_1p0\":\"%f\","
             "\"mc_2p5\":\"%f\","
             "\"mc_4p0\":\"%f\","
@@ -98,6 +110,8 @@ const char* formatCloudData() {
             "\"aqi_main_value\":\"%d\","
             "\"aqi_main_libelle\":\"%s\""
         "}",
+            context.gas.tvoc,
+            context.gas.eco2,
             context.particleMatter.mc_1p0,
             context.particleMatter.mc_2p5,
             context.particleMatter.mc_4p0,

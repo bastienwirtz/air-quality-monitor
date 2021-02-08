@@ -38,14 +38,17 @@ void Screen::setView(uint8_t view) { this->currentView = view; }
 
 void Screen::refresh() {
   switch (this->currentView) {
-  case SCREEN_STATUS:
-    this->showStatus();
-    break;
   case SCREEN_PM25:
     this->showMainConcentration();
     break;
-  case SCREEN_PMALL:
-    this->showAllConcentration();
+  case SCREEN_ECO2:
+    this->showeco2();
+    break;
+  case SCREEN_TVOC:
+    this->showtvoc();
+    break;
+  case SCREEN_ALL:
+    this->showAllData();
     break;
   }
 }
@@ -95,7 +98,41 @@ void Screen::showMainConcentration() {
   this->tft.drawString(String(this->context->particleMatter.mc_2p5) + "ug/m3", 10, this->h, 1);
 }
 
-void Screen::showAllConcentration() {
+void Screen::showeco2() {
+  this->tft.fillScreen(TFT_BLACK);
+  this->tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  this->tft.setTextSize(6);
+  this->tft.setTextDatum(TL_DATUM);
+  this->tft.drawString(String(this->context->gas.eco2), 10, 10, 1);
+
+  this->tft.setTextSize(4);
+  this->tft.setTextDatum(TR_DATUM);
+  this->tft.drawString("eCO2", this->w, 10, 1);
+
+  this->tft.setTextSize(2);
+  this->tft.setTextDatum(BR_DATUM);
+  this->tft.drawString("ppm", this->w, this->h, 1);
+}
+
+void Screen::showtvoc() {
+  this->tft.fillScreen(TFT_BLACK);
+  this->tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  this->tft.setTextSize(6);
+  this->tft.setTextDatum(TL_DATUM);
+  this->tft.drawString(String(this->context->gas.tvoc), 10, 10, 1);
+
+  this->tft.setTextSize(4);
+  this->tft.setTextDatum(TR_DATUM);
+  this->tft.drawString("TVOC", this->w, 10, 1);
+
+  this->tft.setTextSize(2);
+  this->tft.setTextDatum(BR_DATUM);
+  this->tft.drawString("ppb", this->w, this->h, 1);
+}
+
+void Screen::showAllData() {
   this->tft.fillScreen(TFT_BLACK);
   this->tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
@@ -108,11 +145,8 @@ void Screen::showAllConcentration() {
   this->tft.println(this->context->particleMatter.mc_4p0);
   this->tft.print("PM10: ");
   this->tft.println(this->context->particleMatter.mc_10p0);
-}
-
-void Screen::showStatus() {
-  this->tft.fillScreen(TFT_GREENYELLOW);
-  this->tft.setTextDatum(TL_DATUM);
-  this->tft.setCursor(0, 60);
-  this->tft.println("Status");
+  this->tft.print("TVOC: ");
+  this->tft.println(this->context->gas.tvoc);
+  this->tft.print("eCO2: ");
+  this->tft.println(this->context->gas.eco2);
 }
