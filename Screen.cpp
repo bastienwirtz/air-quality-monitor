@@ -135,18 +135,42 @@ void Screen::showtvoc() {
 void Screen::showAllData() {
   this->tft.fillScreen(TFT_BLACK);
   this->tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  this->tft.setTextFont(1);
+  uint8_t currentLineTop = 10;
+  uint8_t lineGap = 5;
 
-  this->tft.setCursor(0, 0);
-  this->tft.print("PM1: ");
-  this->tft.println(this->context->particleMatter.mc_1p0);
-  this->tft.print("PM2.5: ");
-  this->tft.println(this->context->particleMatter.mc_2p5);
-  this->tft.print("PM4: ");
-  this->tft.println(this->context->particleMatter.mc_4p0);
-  this->tft.print("PM10: ");
-  this->tft.println(this->context->particleMatter.mc_10p0);
-  this->tft.print("TVOC: ");
-  this->tft.println(this->context->gas.tvoc);
-  this->tft.print("eCO2: ");
-  this->tft.println(this->context->gas.eco2);
+  this->tft.setTextDatum(MC_DATUM);
+  this->tft.setTextSize(2);
+  int8_t ypos = this->h / 2;
+  this->tft.drawString("Everything!", this->w / 2, 10);
+  
+  this->tft.setTextDatum(TL_DATUM);
+  this->tft.setTextSize(1);
+  uint8_t lineHeight = this->tft.fontHeight();
+
+  
+  currentLineTop += lineHeight+lineGap;
+  this->tft.fillCircle(14, currentLineTop+2, 4, this->context->AQI.aqi_1p0.color);
+  this->tft.drawString("PM1: " + String(this->context->AQI.aqi_1p0.value) + " (" +
+                    String(this->context->particleMatter.mc_1p0) + "ug/m3)", 25, currentLineTop);
+
+  currentLineTop += lineHeight+lineGap;
+  this->tft.fillCircle(14, currentLineTop+2, 4, this->context->AQI.aqi_2p5.color);
+  this->tft.drawString("PM2.5: " + String(this->context->AQI.aqi_2p5.value) + " (" +
+                    String(this->context->particleMatter.mc_2p5) + "ug/m3)", 25, currentLineTop);
+
+  currentLineTop += lineHeight+lineGap;
+  this->tft.fillCircle(14, currentLineTop+2, 4, this->context->AQI.aqi_4p0.color);
+  this->tft.drawString("PM4: " + String(this->context->AQI.aqi_4p0.value) + " (" +
+                    String(this->context->particleMatter.mc_4p0) + "ug/m3)", 25, currentLineTop);
+  
+  currentLineTop += lineHeight+lineGap;
+  this->tft.fillCircle(14, currentLineTop+2, 4, this->context->AQI.aqi_10p0.color);
+  this->tft.drawString("PM10: " + String(this->context->AQI.aqi_10p0.value) + " (" +
+                    String(this->context->particleMatter.mc_10p0) + "ug/m3)", 25, currentLineTop);
+
+  currentLineTop += lineHeight+lineGap;
+  this->tft.drawString("TVOC: " + String(this->context->gas.tvoc), 10, currentLineTop);
+  currentLineTop += lineHeight+lineGap;
+  this->tft.drawString("eCO2: " + String(this->context->gas.eco2), 10, currentLineTop);
 }

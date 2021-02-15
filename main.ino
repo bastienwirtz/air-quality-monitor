@@ -67,7 +67,7 @@ void loop()
         pms.update();
         voc.update();
         screen.refresh();
-        cloud.send("home/livingroom/airquality", formatCloudData());
+        cloud.send("home/livingroom/airquality", formatCloudData().c_str());
     }
     delay(5);
 }
@@ -94,8 +94,8 @@ bool timesUp(long interval) {
     }
 }
 
-const char* formatCloudData() {
-    char cloudDataBuffer[300];
+String formatCloudData() {
+    char cloudDataBuffer[355];
     sprintf(cloudDataBuffer, "{"
             "\"tvoc\":\"%d\","
             "\"eco2\":\"%d\","
@@ -123,5 +123,5 @@ const char* formatCloudData() {
             context.AQI.aqi_2p5.value,
             context.AQI.aqi_2p5.libelle
     );
-    return String(cloudDataBuffer).c_str();
+    return String(cloudDataBuffer);
 } 

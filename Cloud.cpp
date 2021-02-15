@@ -29,9 +29,7 @@ bool Cloud::connect() {
 bool Cloud::mqttConnect() {
   char *deviceid = "pmsensor";
   mqtt.connect(deviceid, this->mqttUser, this->mqttPassword);
-  // delay(1); // Ensure the watchdog do not think the process is locked (avoid
-  // reboot).
-
+  mqtt.setBufferSize(512);
   bool connected = mqtt.connected();
   if (mqtt.connected()) {
     mqtt.publish("home/devices/connect", deviceid);
