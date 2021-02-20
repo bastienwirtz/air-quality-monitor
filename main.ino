@@ -27,9 +27,7 @@ const long readInterval = 15000; // 15s
 
 void setup()
 {
-    setButtonsHandler();
     screen.showSplash("Connecting WiFi");
-    
     if (!cloud.connect()) {
         screen.showError("Fail!");
         delay(500);
@@ -53,6 +51,7 @@ void setup()
         pms.update();
     }
 
+    setButtonsHandler();
     screen.setView(SCREEN_PM25);
     screen.refresh();
 }
@@ -110,8 +109,8 @@ String formatCloudData() {
             "\"aqi_main_value\":\"%d\","
             "\"aqi_main_libelle\":\"%s\""
         "}",
-            context.gas.tvoc,
-            context.gas.eco2,
+            context.gas.tvoc.value,
+            context.gas.eco2.value,
             context.particleMatter.mc_1p0,
             context.particleMatter.mc_2p5,
             context.particleMatter.mc_4p0,
