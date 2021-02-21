@@ -2,6 +2,11 @@
 
 Connected Particle matter, eCO2 & TVOC air quality monitor.
 
+Features: 
+- Particle matter monitoring (PM1, PM12.5, PM4, PM10)
+- eCO2 / TVOC monitoring
+- MQTT connectivity
+
 ## Parts
 
 - [LILYGO® TTGO T-Display ESP32](http://www.lilygo.cn/prod_view.aspx?TypeId=50033&Id=1126&FId=t3:50033:3)
@@ -48,7 +53,7 @@ char* mqttPassword = "your-mqtt-password";
 
 **Compiler:**  
 Make sure to include the repository directory to your compiler include path.
-Exemple for `vscode`: 
+Example for `vscode`: 
 
 ```json
 // .vscode/c_cpp_properties.json (inside the source directory)
