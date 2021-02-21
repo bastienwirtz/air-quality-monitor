@@ -44,6 +44,8 @@ private:
   // View data binding
   Context *context;
 
+  void showMeasurement(measurement m, char *libelle, char *unit, char *rawValueUnit = "");
+
 public:
   Screen(struct Context *context);
   void setView(uint8_t view);

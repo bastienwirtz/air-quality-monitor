@@ -1,10 +1,7 @@
 #include "PMSensor.h"
 #include <Arduino.h>
 
-PMSensor::PMSensor(sps30_measurement *m, aqi_measurement *aqi) {
-  this->measurement = m;
-  this->aqi = aqi;
-}
+PMSensor::PMSensor(aqi_measurement *aqi) { this->aqi = aqi; }
 
 bool PMSensor::init() {
   sensirion_i2c_init();
@@ -27,14 +24,14 @@ bool PMSensor::init() {
 }
 
 void PMSensor::update() {
-  sps30_read_measurement(this->measurement);
-  this->aqi->aqi_1p0 = this->getAQI(this->measurement->mc_1p0);
-  this->aqi->aqi_2p5 = this->getAQI(this->measurement->mc_2p5);
-  this->aqi->aqi_4p0 = this->getAQI(this->measurement->mc_4p0);
-  this->aqi->aqi_10p0 = this->getAQI(this->measurement->mc_10p0);
+  sps30_read_measurement(&this->pm);
+  this->aqi->aqi_1p0 = this->getAQI(this->pm.mc_1p0);
+  this->aqi->aqi_2p5 = this->getAQI(this->pm.mc_2p5);
+  this->aqi->aqi_4p0 = this->getAQI(this->pm.mc_4p0);
+  this->aqi->aqi_10p0 = this->getAQI(this->pm.mc_10p0);
 }
 
-AQI PMSensor::getAQI(float concentration) {
+measurement PMSensor::getAQI(float concentration) {
   float cLow = 0.0;
   float cHi = 0.0;
   int16_t aqiLow = 0;
@@ -86,10 +83,11 @@ AQI PMSensor::getAQI(float concentration) {
     color = 0x7800;
   }
 
-  AQI aqi;
+  measurement aqi;
   aqi.value = ((aqiHi - aqiLow) / (cHi - cLow)) * (concentration - cLow) + aqiLow;
   aqi.libelle = libelle;
   aqi.color = color;
+  aqi.rawValue = concentration;
 
   if (aqi.value > 500) {
     aqi.value = 500;

@@ -15,7 +15,7 @@ char* mqttPassword = "";
 
 Context context;
 Screen screen = Screen(&context);
-PMSensor pms = PMSensor(&context.particleMatter, &context.AQI);
+PMSensor pms = PMSensor(&context.AQI);
 VOCSensor voc = VOCSensor(&context.gas);
 Cloud cloud = Cloud(wifiSsid, wifiPassword, mqttServer, mqttUser, mqttPassword);
 
@@ -111,10 +111,10 @@ String formatCloudData() {
         "}",
             context.gas.tvoc.value,
             context.gas.eco2.value,
-            context.particleMatter.mc_1p0,
-            context.particleMatter.mc_2p5,
-            context.particleMatter.mc_4p0,
-            context.particleMatter.mc_10p0,
+            context.AQI.aqi_1p0.rawValue,
+            context.AQI.aqi_2p5.rawValue,
+            context.AQI.aqi_4p0.rawValue,
+            context.AQI.aqi_10p0.rawValue,
             context.AQI.aqi_1p0.value,
             context.AQI.aqi_2p5.value,
             context.AQI.aqi_4p0.value,

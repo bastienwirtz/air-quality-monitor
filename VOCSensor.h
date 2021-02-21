@@ -1,14 +1,9 @@
+#include "Measurement.h"
 #include <Adafruit_SGP30.h>
 #include <Wire.h>
 
 #ifndef AQM_VOC
 #define AQM_VOC
-
-struct measurement {
-  int16_t value = 0;
-  char *libelle = "unknown";
-  int color = 0xD69A;
-};
 
 struct gas_measurement {
   measurement tvoc;
