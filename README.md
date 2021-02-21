@@ -2,10 +2,14 @@
 
 Connected Particle matter, eCO2 & TVOC air quality monitor.
 
-Features: 
+**Features:** 
 - Particle matter monitoring (PM1, PM12.5, PM4, PM10)
 - eCO2 / TVOC monitoring
 - MQTT connectivity
+
+**Todo**
+- Store sgp sensor baseline in esp32 memory & restore it on boot.
+
 
 ## Parts
 
