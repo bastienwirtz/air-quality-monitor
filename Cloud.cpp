@@ -3,7 +3,8 @@
 WiFiClientSecure espWifiClient;
 PubSubClient mqtt(espWifiClient);
 
-Cloud::Cloud(char *ssid, char *password, char *mqttServer, char *mqttUser, char *mqttPassword) {
+Cloud::Cloud(char *name, char *ssid, char *password, char *mqttServer, char *mqttUser, char *mqttPassword) {
+  this->name = name;
   this->ssid = ssid;
   this->password = password;
   this->mqttServer = mqttServer;
@@ -27,12 +28,11 @@ bool Cloud::connect() {
 }
 
 bool Cloud::mqttConnect() {
-  char *deviceid = "pmsensor";
-  mqtt.connect(deviceid, this->mqttUser, this->mqttPassword);
+  mqtt.connect(this->name, this->mqttUser, this->mqttPassword);
   mqtt.setBufferSize(512);
   bool connected = mqtt.connected();
   if (mqtt.connected()) {
-    mqtt.publish("home/devices/connect", deviceid);
+    this->sendEvent("connected");
   }
   return mqtt.connected();
 }
@@ -51,4 +51,8 @@ void Cloud::send(char *topic, const char *message) {
   }
 }
 
-uint8_t Cloud::getStatus() { return WiFi.status(); }
+void Cloud::sendEvent(char* event) {
+    char messageBuffer[255];
+    sprintf(messageBuffer, "{\"device\":\"%s\", \"event\": \"%s\"}", this->name, event);
+    mqtt.publish("home/devices/event", messageBuffer);
+}

@@ -17,7 +17,7 @@ Context context;
 Screen screen = Screen(&context);
 PMSensor pms = PMSensor(&context.AQI);
 VOCSensor voc = VOCSensor(&context.gas);
-Cloud cloud = Cloud(wifiSsid, wifiPassword, mqttServer, mqttUser, mqttPassword);
+Cloud cloud = Cloud(deviceName, wifiSsid, wifiPassword, mqttServer, mqttUser, mqttPassword);
 
 Button2 btnTop(35);
 Button2 btnBottom(0);
@@ -96,17 +96,17 @@ bool timesUp(long interval) {
 String formatCloudData() {
     char cloudDataBuffer[355];
     sprintf(cloudDataBuffer, "{"
-            "\"tvoc\":\"%d\","
-            "\"eco2\":\"%d\","
-            "\"mc_1p0\":\"%f\","
-            "\"mc_2p5\":\"%f\","
-            "\"mc_4p0\":\"%f\","
-            "\"mc_10p0\":\"%f\","
-            "\"aqi_1p0\":\"%d\","
-            "\"aqi_2p5\":\"%d\","
-            "\"aqi_4p0\":\"%d\","
-            "\"aqi_10p0\":\"%d\","
-            "\"aqi_main_value\":\"%d\","
+            "\"tvoc\":%d,"
+            "\"eco2\":%d,"
+            "\"mc_1p0\":%f,"
+            "\"mc_2p5\":%f,"
+            "\"mc_4p0\":%f,"
+            "\"mc_10p0\":%f,"
+            "\"aqi_1p0\":%d,"
+            "\"aqi_2p5\":%d,"
+            "\"aqi_4p0\":%d,"
+            "\"aqi_10p0\":%d,"
+            "\"aqi_main_value\":%d,"
             "\"aqi_main_libelle\":\"%s\""
         "}",
             context.gas.tvoc.value,
